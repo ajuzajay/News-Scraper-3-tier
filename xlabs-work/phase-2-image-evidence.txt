@@ -1,0 +1,19 @@
+# Phase 2 Image Evidence
+
+## Dockerfiles
+- frontend/Dockerfile
+- backend/Dockerfile
+
+## Image Tags
+- news-scraper-frontend:phase2
+- news-scraper-backend:phase2
+
+## Runtime Decisions
+- Frontend is static and served by nginx.
+- Backend is Python/FastAPI and starts with uvicorn.
+- Backend dependencies are installed during docker build.
+- Runtime database wiring is not hardcoded into the image.
+REPOSITORY             TAG       IMAGE ID       CREATED         SIZE
+news-scraper-backend   phase2    b47bf2fd1414   5 minutes ago   248MB
+REPOSITORY              TAG       IMAGE ID       CREATED         SIZE
+news-scraper-frontend   phase2    28129397c91b   3 minutes ago   75.9MB

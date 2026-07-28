@@ -1,0 +1,14 @@
+deployment.apps/news-backend 
+REVISION  CHANGE-CAUSE
+3         <none>
+4         <none>
+5         <none>
+6         <none>
+7         <none>
+9         <none>
+11        <none>
+12        <none>
+13        <none>
+15        <none>
+16        <none>
+

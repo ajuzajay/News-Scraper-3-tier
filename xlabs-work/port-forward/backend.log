@@ -1,0 +1,9 @@
+Forwarding from 127.0.0.1:8000 -> 8000
+Forwarding from [::1]:8000 -> 8000
+Handling connection for 8000
+Handling connection for 8000
+Handling connection for 8000
+Handling connection for 8000
+Handling connection for 8000
+E0727 23:02:58.872922   28672 portforward.go:424] "Unhandled Error" err="an error occurred forwarding 8000 -> 8000: error forwarding port 8000 to pod 68459f311a81ca5a0df0e4bed267090910d8c63ef1b8664fb882db5318221fb2, uid : failed to find sandbox \"68459f311a81ca5a0df0e4bed267090910d8c63ef1b8664fb882db5318221fb2\" in store: not found"
+error: lost connection to pod

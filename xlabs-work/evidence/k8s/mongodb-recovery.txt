@@ -1,0 +1,15 @@
+NAME                          READY   AGE    CONTAINERS   IMAGES
+statefulset.apps/news-mongo   1/1     4h6m   mongo        mongo:7
+
+NAME                                 READY   STATUS    RESTARTS   AGE     IP            NODE                               NOMINATED NODE   READINESS GATES
+pod/news-backend-54594df65f-9q6lp    1/1     Running   0          4h54m   10.244.0.17   xlabs-news-scraper-control-plane   <none>           <none>
+pod/news-frontend-7d86c69db8-bdddm   1/1     Running   0          8h      10.244.0.15   xlabs-news-scraper-control-plane   <none>           <none>
+pod/news-mongo-0                     1/1     Running   0          4m32s   10.244.0.20   xlabs-news-scraper-control-plane   <none>           <none>
+
+NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE   SELECTOR
+service/news-backend    ClusterIP   10.96.175.155   <none>        8000/TCP    8h    app=news-backend
+service/news-frontend   ClusterIP   10.96.186.128   <none>        80/TCP      8h    app=news-frontend
+service/news-mongo      ClusterIP   10.96.215.76    <none>        27017/TCP   24h   app=news-mongo
+
+NAME                                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE    VOLUMEMODE
+persistentvolumeclaim/mongo-data-news-mongo-0   Bound    pvc-ca504d7d-c7b0-45b7-a051-007bfabb7616   1Gi        RWO            standard       <unset>                 4h6m   Filesystem

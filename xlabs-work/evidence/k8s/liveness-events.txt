@@ -1,0 +1,48 @@
+LAST SEEN   TYPE      REASON              OBJECT                                MESSAGE
+80m         Normal    SuccessfulCreate    replicaset/news-backend-dc54fb6fb     Created pod: news-backend-dc54fb6fb-nzbgb
+17m         Normal    ScalingReplicaSet   deployment/news-backend               Scaled up replica set news-backend-dc54fb6fb from 0 to 1
+80m         Normal    Started             pod/news-backend-dc54fb6fb-nzbgb      Container started
+80m         Normal    Created             pod/news-backend-dc54fb6fb-nzbgb      Container created
+80m         Normal    Pulled              pod/news-backend-dc54fb6fb-nzbgb      Container image "news-scraper-backend:phase7" already present on machine and can be accessed by the pod
+80m         Normal    Scheduled           pod/news-backend-dc54fb6fb-nzbgb      Successfully assigned news-scraper/news-backend-dc54fb6fb-nzbgb to xlabs-news-scraper-control-plane
+80m         Normal    ScalingReplicaSet   deployment/news-backend               Scaled down replica set news-backend-7947bc9f6b from 1 to 0
+80m         Normal    SuccessfulDelete    replicaset/news-backend-7947bc9f6b    Deleted pod: news-backend-7947bc9f6b-wml9l
+80m         Normal    Killing             pod/news-backend-7947bc9f6b-wml9l     Stopping container backend
+78m         Normal    Created             pod/news-frontend-756945474d-tzrhs    Container created
+78m         Normal    ScalingReplicaSet   deployment/news-frontend              Scaled up replica set news-frontend-756945474d from 0 to 1
+78m         Normal    Scheduled           pod/news-frontend-756945474d-tzrhs    Successfully assigned news-scraper/news-frontend-756945474d-tzrhs to xlabs-news-scraper-control-plane
+78m         Normal    Pulled              pod/news-frontend-756945474d-tzrhs    Container image "news-scraper-frontend:phase7" already present on machine and can be accessed by the pod
+78m         Normal    SuccessfulCreate    replicaset/news-frontend-756945474d   Created pod: news-frontend-756945474d-tzrhs
+78m         Normal    Started             pod/news-frontend-756945474d-tzrhs    Container started
+78m         Normal    ScalingReplicaSet   deployment/news-frontend              Scaled down replica set news-frontend-76b6f68f4d from 1 to 0
+78m         Normal    Killing             pod/news-frontend-76b6f68f4d-mbpjb    Stopping container news-frontend
+78m         Normal    SuccessfulDelete    replicaset/news-frontend-76b6f68f4d   Deleted pod: news-frontend-76b6f68f4d-mbpjb
+73m         Normal    ScalingReplicaSet   deployment/news-backend               Scaled up replica set news-backend-5b59cff69b from 0 to 1
+73m         Normal    Scheduled           pod/news-backend-5b59cff69b-z29nz     Successfully assigned news-scraper/news-backend-5b59cff69b-z29nz to xlabs-news-scraper-control-plane
+73m         Normal    SuccessfulCreate    replicaset/news-backend-5b59cff69b    Created pod: news-backend-5b59cff69b-z29nz
+73m         Normal    Started             pod/news-backend-5b59cff69b-z29nz     Container started
+73m         Normal    Created             pod/news-backend-5b59cff69b-z29nz     Container created
+73m         Normal    Pulled              pod/news-backend-5b59cff69b-z29nz     Container image "news-scraper-backend:phase7" already present on machine and can be accessed by the pod
+69m         Warning   Unhealthy           pod/news-backend-5b59cff69b-z29nz     Readiness probe failed: HTTP probe failed with statuscode: 404
+68m         Normal    ScalingReplicaSet   deployment/news-backend               Scaled down replica set news-backend-5b59cff69b from 1 to 0
+68m         Normal    SuccessfulDelete    replicaset/news-backend-5b59cff69b    Deleted pod: news-backend-5b59cff69b-z29nz
+68m         Normal    Killing             pod/news-backend-5b59cff69b-z29nz     Stopping container backend
+57m         Normal    Started             pod/news-backend-5f588b45-rd4x4       Container started
+62m         Normal    SuccessfulCreate    replicaset/news-backend-5f588b45      Created pod: news-backend-5f588b45-rd4x4
+62m         Normal    Scheduled           pod/news-backend-5f588b45-rd4x4       Successfully assigned news-scraper/news-backend-5f588b45-rd4x4 to xlabs-news-scraper-control-plane
+33m         Normal    Pulled              pod/news-backend-5f588b45-rd4x4       Container image "news-scraper-backend:phase7" already present on machine and can be accessed by the pod
+55m         Normal    Created             pod/news-backend-5f588b45-rd4x4       Container created
+62m         Normal    ScalingReplicaSet   deployment/news-backend               Scaled up replica set news-backend-5f588b45 from 0 to 1
+62m         Normal    Killing             pod/news-backend-dc54fb6fb-nzbgb      Stopping container backend
+62m         Normal    SuccessfulDelete    replicaset/news-backend-dc54fb6fb     Deleted pod: news-backend-dc54fb6fb-nzbgb
+62m         Normal    ScalingReplicaSet   deployment/news-backend               Scaled down replica set news-backend-dc54fb6fb from 1 to 0
+53m         Warning   Unhealthy           pod/news-backend-5f588b45-rd4x4       Liveness probe failed: HTTP probe failed with statuscode: 404
+56m         Normal    Killing             pod/news-backend-5f588b45-rd4x4       Container backend failed liveness probe, will be restarted
+17m         Warning   BackOff             pod/news-backend-5f588b45-rd4x4       Back-off restarting failed container backend in pod news-backend-5f588b45-rd4x4_news-scraper(e118f6ac-d24a-474a-a842-0a5eb5446623)
+17m         Normal    Created             pod/news-backend-dc54fb6fb-ncv6d      Container created
+17m         Normal    Scheduled           pod/news-backend-dc54fb6fb-ncv6d      Successfully assigned news-scraper/news-backend-dc54fb6fb-ncv6d to xlabs-news-scraper-control-plane
+17m         Normal    Pulled              pod/news-backend-dc54fb6fb-ncv6d      Container image "news-scraper-backend:phase7" already present on machine and can be accessed by the pod
+17m         Normal    Started             pod/news-backend-dc54fb6fb-ncv6d      Container started
+17m         Normal    SuccessfulCreate    replicaset/news-backend-dc54fb6fb     Created pod: news-backend-dc54fb6fb-ncv6d
+17m         Normal    SuccessfulDelete    replicaset/news-backend-5f588b45      Deleted pod: news-backend-5f588b45-rd4x4
+17m         Normal    ScalingReplicaSet   deployment/news-backend               Scaled down replica set news-backend-5f588b45 from 1 to 0

@@ -1,0 +1,60 @@
+Name:             news-mongo-0
+Namespace:        news-scraper
+Priority:         0
+Service Account:  default
+Node:             xlabs-news-scraper-control-plane/172.18.0.2
+Start Time:       Sun, 26 Jul 2026 21:28:36 +0530
+Labels:           app=news-mongo
+                  apps.kubernetes.io/pod-index=0
+                  controller-revision-hash=news-mongo-bb5f64f7d
+                  statefulset.kubernetes.io/pod-name=news-mongo-0
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.20
+IPs:
+  IP:           10.244.0.20
+Controlled By:  StatefulSet/news-mongo
+Containers:
+  mongo:
+    Container ID:   containerd://077c30d9d0d7210eb68f1710993caa17bf7963bd3485dd40c54d670a5eb3dd0c
+    Image:          mongo:7
+    Image ID:       docker.io/library/mongo@sha256:9bdaeb6dac6e7e762e84e2f84103d1f9bb078fa1ba6bde8bb9d2274f655ad173
+    Port:           27017/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sun, 26 Jul 2026 21:28:37 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /data/db from mongo-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-675nq (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  mongo-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  mongo-data-news-mongo-0
+    ReadOnly:   false
+  kube-api-access-675nq:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  5m2s  default-scheduler  Successfully assigned news-scraper/news-mongo-0 to xlabs-news-scraper-control-plane
+  Normal  Pulled     5m1s  kubelet            Container image "mongo:7" already present on machine and can be accessed by the pod
+  Normal  Created    5m1s  kubelet            Container created
+  Normal  Started    5m1s  kubelet            Container started

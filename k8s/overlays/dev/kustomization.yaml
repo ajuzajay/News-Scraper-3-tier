@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+images:
+  - name: news-scraper-backend
+    newName: news-scraper-backend
+    newTag: phase7
+  - name: news-scraper-frontend
+    newName: news-scraper-frontend
+    newTag: phase7
+patches:
+  - target:
+      kind: Deployment
+      name: news-backend
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/containers/0/readinessProbe
+      - op: remove
+        path: /spec/template/spec/containers/0/livenessProbe
+      - op: remove
+        path: /spec/template/spec/containers/0/startupProbe
+      - op: remove
+        path: /spec/template/spec/containers/0/resources
+  - target:
+      kind: Deployment
+      name: news-frontend
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/containers/0/readinessProbe
+      - op: remove
+        path: /spec/template/spec/containers/0/livenessProbe
+      - op: remove
+        path: /spec/template/spec/containers/0/resources

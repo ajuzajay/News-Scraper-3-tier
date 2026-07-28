@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: news-scraper-config
+  namespace: news-scraper
+
+data:
+  APP_ENV: local-kind
+  MONGO_URL: mongodb://news-mongo:27017
+  MONGO_DATABASE: news_app
+  FRONTEND_API_BASE_URL: http://news-backend:8000

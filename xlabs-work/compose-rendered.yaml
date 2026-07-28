@@ -1,0 +1,54 @@
+name: project-news-scraper-production-readiness
+services:
+  backend:
+    depends_on:
+      mongo:
+        condition: service_started
+        required: true
+    environment:
+      APP_ENV: local
+      BACKEND_PORT: "8000"
+      FRONTEND_PORT: "8080"
+      MONGO_DATABASE: news_app
+      MONGO_URL: mongodb://mongo:27017
+    image: news-scraper-backend:phase2
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 8000
+        published: "8000"
+        protocol: tcp
+  frontend:
+    depends_on:
+      backend:
+        condition: service_started
+        required: true
+    image: news-scraper-frontend:phase2
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "8080"
+        protocol: tcp
+  mongo:
+    image: mongo:7
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 27017
+        published: "27017"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: news-mongo-data
+        target: /data/db
+        volume: {}
+networks:
+  default:
+    name: project-news-scraper-production-readiness_default
+volumes:
+  news-mongo-data:
+    name: project-news-scraper-production-readiness_news-mongo-data

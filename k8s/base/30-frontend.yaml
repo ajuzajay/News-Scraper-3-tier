@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news-frontend
+  namespace: news-scraper
+  labels:
+    app: news-frontend
+  
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: news-frontend
+  template:
+    metadata:
+      labels:
+        app: news-frontend
+    spec:
+      containers:
+        - name: news-frontend
+          image: news-scraper-frontend:phase7
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: news-frontend
+  namespace: news-scraper
+  labels:
+    app: news-frontend
+
+spec:
+  selector:
+    app: news-frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

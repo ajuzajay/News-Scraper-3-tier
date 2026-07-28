@@ -1,0 +1,2 @@
+NAME           ENDPOINTS          AGE
+news-backend   10.244.0.27:8000   10h

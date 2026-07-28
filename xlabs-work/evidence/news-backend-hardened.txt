@@ -1,0 +1,55 @@
+Name:                   news-backend
+Namespace:              news-scraper
+CreationTimestamp:      Sun, 26 Jul 2026 12:47:23 +0530
+Labels:                 app=news-backend
+Annotations:            deployment.kubernetes.io/revision: 14
+Selector:               app=news-backend
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:       app=news-backend
+  Annotations:  kubectl.kubernetes.io/restartedAt: 2026-07-26T22:43:33+05:30
+  Containers:
+   backend:
+    Image:           news-scraper-backend:phase7
+    Port:            8000/TCP
+    Host Port:       0/TCP
+    SeccompProfile:  RuntimeDefault
+    Limits:
+      cpu:     500m
+      memory:  512Mi
+    Requests:
+      cpu:      100m
+      memory:   128Mi
+    Liveness:   http-get http://:8000/health delay=15s timeout=2s period=20s #success=1 #failure=3
+    Readiness:  http-get http://:8000/health delay=5s timeout=2s period=10s #success=1 #failure=3
+    Startup:    http-get http://:8000/health delay=0s timeout=1s period=5s #success=1 #failure=12
+    Environment:
+      APP_ENV:            <set to the key 'APP_ENV' of config map 'news-scraper-config'>         Optional: false
+      MONGO_URL:          <set to the key 'MONGO_URL' of config map 'news-scraper-config'>       Optional: false
+      MONGO_DATABASE:     <set to the key 'MONGO_DATABASE' of config map 'news-scraper-config'>  Optional: false
+      SCRAPER_API_TOKEN:  <set to the key 'SCRAPER_API_TOKEN' in secret 'news-scraper-secret'>   Optional: false
+    Mounts:               <none>
+  Volumes:                <none>
+  Node-Selectors:         <none>
+  Tolerations:            <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  news-backend-55df478db7 (0/0 replicas created), news-backend-74876fcbf5 (0/0 replicas created), news-backend-54594df65f (0/0 replicas created), news-backend-8b8c55f5b (0/0 replicas created), news-backend-dd4d4c774 (0/0 replicas created), news-backend-7947bc9f6b (0/0 replicas created), news-backend-dc54fb6fb (0/0 replicas created), news-backend-5b59cff69b (0/0 replicas created), news-backend-5f588b45 (0/0 replicas created), news-backend-69666b7d46 (0/0 replicas created)
+NewReplicaSet:   news-backend-5996b67d8 (1/1 replicas created)
+Events:
+  Type     Reason                 Age                 From                   Message
+  ----     ------                 ----                ----                   -------
+  Normal   ScalingReplicaSet      92m                 deployment-controller  Scaled up replica set news-backend-5f588b45 from 0 to 1
+  Normal   ScalingReplicaSet      46m (x2 over 109m)  deployment-controller  Scaled up replica set news-backend-dc54fb6fb from 0 to 1
+  Normal   ScalingReplicaSet      46m                 deployment-controller  Scaled down replica set news-backend-5f588b45 from 1 to 0
+  Warning  ReplicaSetCreateError  16m                 deployment-controller  Failed to create new replica set "news-backend-69666b7d46": Unauthorized
+  Normal   ScalingReplicaSet      16m                 deployment-controller  Scaled up replica set news-backend-69666b7d46 from 0 to 1
+  Normal   ScalingReplicaSet      16m (x2 over 92m)   deployment-controller  Scaled down replica set news-backend-dc54fb6fb from 1 to 0
+  Normal   ScalingReplicaSet      4m27s               deployment-controller  Scaled up replica set news-backend-5996b67d8 from 0 to 1
+  Normal   ScalingReplicaSet      4m22s               deployment-controller  Scaled down replica set news-backend-69666b7d46 from 1 to 0

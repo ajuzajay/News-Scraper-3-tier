@@ -1,0 +1,4 @@
+NAME                             READY   STATUS    RESTARTS   AGE     IP            NODE                               NOMINATED NODE   READINESS GATES
+news-backend-5996b67d8-86mdr     1/1     Running   0          5m10s   10.244.0.34   xlabs-news-scraper-control-plane   <none>           <none>
+news-frontend-85f7ccf455-w6fsj   1/1     Running   0          5m10s   10.244.0.35   xlabs-news-scraper-control-plane   <none>           <none>
+news-mongo-0                     1/1     Running   0          3h38m   10.244.0.20   xlabs-news-scraper-control-plane   <none>           <none>

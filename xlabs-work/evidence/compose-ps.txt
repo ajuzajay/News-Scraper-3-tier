@@ -1,0 +1,4 @@
+NAME                                                   IMAGE                          COMMAND                  SERVICE    CREATED          STATUS          PORTS
+project-news-scraper-production-readiness-backend-1    news-scraper-backend:phase2    "uvicorn main:app --…"   backend    35 minutes ago   Up 35 minutes   0.0.0.0:8000->8000/tcp
+project-news-scraper-production-readiness-frontend-1   news-scraper-frontend:phase2   "/docker-entrypoint.…"   frontend   35 minutes ago   Up 35 minutes   0.0.0.0:8080->80/tcp
+project-news-scraper-production-readiness-mongo-1      mongo:7                        "docker-entrypoint.s…"   mongo      35 minutes ago   Up 35 minutes   0.0.0.0:27017->27017/tcp

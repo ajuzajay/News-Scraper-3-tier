@@ -1,0 +1,14 @@
+NAME                                 READY   STATUS    RESTARTS   AGE   IP            NODE                               NOMINATED NODE   READINESS GATES
+pod/news-backend-5996b67d8-86mdr     1/1     Running   0          19h   10.244.0.34   xlabs-news-scraper-control-plane   <none>           <none>
+pod/news-frontend-85f7ccf455-w6fsj   1/1     Running   0          19h   10.244.0.35   xlabs-news-scraper-control-plane   <none>           <none>
+pod/news-mongo-0                     1/1     Running   0          23h   10.244.0.20   xlabs-news-scraper-control-plane   <none>           <none>
+
+NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE   SELECTOR
+service/news-backend    ClusterIP   10.96.175.155   <none>        8000/TCP    31h   app=news-backend
+service/news-frontend   ClusterIP   10.96.186.128   <none>        80/TCP      31h   app=news-frontend
+service/news-mongo      ClusterIP   10.96.215.76    <none>        27017/TCP   47h   app=news-mongo
+
+NAME                      ENDPOINTS           AGE
+endpoints/news-backend    10.244.0.34:8000    31h
+endpoints/news-frontend   10.244.0.35:8080    31h
+endpoints/news-mongo      10.244.0.20:27017   47h

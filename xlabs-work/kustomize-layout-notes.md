@@ -1,0 +1,9 @@
+- Base contains common app resources and the full production-readiness controls.
+- Dev overlay is for developer availability and can remove probes and resource controls.
+- QA overlay keeps probes, resource controls, and security context.
+- Both overlays use Phase 7 non-root images as the local baseline.
+- Dev CD may deploy even while CI is failing so developers can keep working.
+- QA CD must deploy only images that passed CI.
+- Future projects will extend the flow to pre-prod and production promotion.
+- CI/CD should deploy overlays, not individual files.
+- Avoid editing rendered output from `kubectl kustomize`.

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: news-mongo
+  namespace: news-scraper
+  labels:
+    app: news-mongo
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: news-mongo
+  template:
+    metadata:
+      labels:
+        app: news-mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:7
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - metadata:
+        name: mongo-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: news-mongo
+  namespace: news-scraper
+spec:
+  selector:
+    app: news-mongo
+  ports:
+    - name: mongodb
+      port: 27017
+      targetPort: 27017

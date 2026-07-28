@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news-backend
+  namespace: news-scraper
+  labels:
+    app: news-backend
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: news-backend
+  template:
+    metadata:
+      labels:
+        app: news-backend
+    
+    spec:
+      containers:
+        - name: backend
+          image: news-scraper-backend:phase7
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: news-scraper-config
+                  key: APP_ENV
+            - name: MONGO_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: news-scraper-config
+                  key: MONGO_URL
+            - name: MONGO_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: news-scraper-config
+                  key: MONGO_DATABASE
+            - name: SCRAPER_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: news-scraper-secret
+                  key: SCRAPER_API_TOKEN
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3 
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 12
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: news-backend
+  namespace: news-scraper
+  labels:
+    app: news-backend
+
+spec:
+  selector:
+    app: news-backend
+  ports:
+    - name:
+      port: 8000
+      targetPort: 8000
+
+
+
+       
+
+
+
+
+
+
+
+
+
+

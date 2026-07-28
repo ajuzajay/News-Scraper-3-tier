@@ -1,22 +1,26 @@
-version: '3'
 services:
-  backend:
-    build: ./backend
-    ports:
-      - "8000:8000"
-    environment:
-      - MONGO_URL=mongodb://mongo:27017
-    depends_on:
-      - mongo
-
   mongo:
-    image: mongo
+    image: mongo:7
     ports:
       - "27017:27017"
+    volumes:
+      - news-mongo-data:/data/db
+
+  backend:
+    image: news-scraper-backend:phase2
+    env_file:
+      - .env.compose
+    depends_on:
+      - mongo
+    ports:
+      - "${BACKEND_PORT}:8000"
 
   frontend:
-    image: nginx:alpine
-    volumes:
-      - ./frontend:/usr/share/nginx/html:ro
+    image: news-scraper-frontend:phase2
+    depends_on:
+      - backend
     ports:
-      - "8080:80"
+      - "${FRONTEND_PORT}:80"
+
+volumes:
+  news-mongo-data:

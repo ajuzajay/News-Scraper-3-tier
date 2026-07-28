@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+images:
+  - name: news-scraper-backend
+    newName: news-scraper-backend
+    newTag: phase7
+  - name: news-scraper-frontend
+    newName: news-scraper-frontend
+    newTag: phase7

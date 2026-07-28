@@ -1,0 +1,9 @@
+total 8
+drwxr-xr-x   8 ajayjohn  staff   256 Jul 25 11:00 .
+drwxr-xr-x   3 ajayjohn  staff    96 Jul 25 10:53 ..
+drwxr-xr-x  12 ajayjohn  staff   384 Jul 25 10:56 .git
+-rw-r--r--   1 ajayjohn  staff  3241 Jul 25 10:56 README.md
+drwxr-xr-x   5 ajayjohn  staff   160 Jul 25 11:00 backend
+drwxr-xr-x   5 ajayjohn  staff   160 Jul 25 10:56 frontend
+drwxr-xr-x   2 ajayjohn  staff    64 Jul 25 11:00 k8s
+drwxr-xr-x   4 ajayjohn  staff   128 Jul 25 11:16 xlabs-work

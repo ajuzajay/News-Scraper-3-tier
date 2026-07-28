@@ -31,6 +31,10 @@ async def search_news(topic: str):
     collection.insert_one({"topic": topic, "results": results, "created_at": datetime.utcnow()})
     return {"source": "scraped", "results": results}
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 @app.get("/history")
 async def get_history():
     history = collection.find({}, {"_id": 0, "topic": 1, "created_at": 1})

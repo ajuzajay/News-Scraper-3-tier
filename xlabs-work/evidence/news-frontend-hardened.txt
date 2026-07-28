@@ -1,0 +1,46 @@
+Name:                   news-frontend
+Namespace:              news-scraper
+CreationTimestamp:      Sun, 26 Jul 2026 13:32:59 +0530
+Labels:                 app=news-frontend
+Annotations:            deployment.kubernetes.io/revision: 7
+Selector:               app=news-frontend
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:       app=news-frontend
+  Annotations:  kubectl.kubernetes.io/restartedAt: 2026-07-26T22:44:20+05:30
+  Containers:
+   news-frontend:
+    Image:           news-scraper-frontend:phase7
+    Port:            8080/TCP
+    Host Port:       0/TCP
+    SeccompProfile:  RuntimeDefault
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:         50m
+      memory:      64Mi
+    Liveness:      http-get http://:8080/ delay=15s timeout=2s period=20s #success=1 #failure=3
+    Readiness:     http-get http://:8080/ delay=5s timeout=2s period=10s #success=1 #failure=3
+    Environment:   <none>
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  news-frontend-7d86c69db8 (0/0 replicas created), news-frontend-c6f4f4f67 (0/0 replicas created), news-frontend-5d59cc4ff8 (0/0 replicas created), news-frontend-76b6f68f4d (0/0 replicas created), news-frontend-756945474d (0/0 replicas created), news-frontend-5586dcffb9 (0/0 replicas created)
+NewReplicaSet:   news-frontend-85f7ccf455 (1/1 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  14m    deployment-controller  Scaled up replica set news-frontend-5586dcffb9 from 0 to 1
+  Normal  ScalingReplicaSet  13m    deployment-controller  Scaled down replica set news-frontend-756945474d from 1 to 0
+  Normal  ScalingReplicaSet  4m38s  deployment-controller  Scaled up replica set news-frontend-85f7ccf455 from 0 to 1
+  Normal  ScalingReplicaSet  4m27s  deployment-controller  Scaled down replica set news-frontend-5586dcffb9 from 1 to 0
