@@ -1,0 +1,10 @@
+LAST SEEN   TYPE     REASON              OBJECT                               MESSAGE
+3m57s       Normal   Scheduled           pod/news-backend-789b664544-jkdgp    Successfully assigned news-scraper/news-backend-789b664544-jkdgp to xlabs-news-scraper-control-plane
+3m57s       Normal   Pulled              pod/news-backend-789b664544-jkdgp    Container image "ghcr.io/ajuzajay/news-scraper-backend:qa-23b3ffdf6ca8abd01383c27d4ec4d7d584bd4b3a" already present on machine and can be accessed by the pod
+3m57s       Normal   Created             pod/news-backend-789b664544-jkdgp    Container created
+3m57s       Normal   SuccessfulCreate    replicaset/news-backend-789b664544   Created pod: news-backend-789b664544-jkdgp
+3m57s       Normal   ScalingReplicaSet   deployment/news-backend              Scaled up replica set news-backend-789b664544 from 0 to 1
+3m56s       Normal   Started             pod/news-backend-789b664544-jkdgp    Container started
+3m51s       Normal   Killing             pod/news-backend-5bd8ff4684-27n82    Stopping container backend
+3m51s       Normal   SuccessfulDelete    replicaset/news-backend-5bd8ff4684   Deleted pod: news-backend-5bd8ff4684-27n82
+3m51s       Normal   ScalingReplicaSet   deployment/news-backend              Scaled down replica set news-backend-5bd8ff4684 from 1 to 0

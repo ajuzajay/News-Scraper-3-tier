@@ -94,7 +94,7 @@ jobs:
           kubectl kustomize "k8s/overlays/${TARGET_ENV}" > xlabs-rendered.yaml
           kubectl apply -f xlabs-rendered.yaml
           kubectl set image deployment/news-backend backend="$BACKEND_IMAGE" -n news-scraper
-          kubectl set image deployment/news-frontend frontend="$FRONTEND_IMAGE" -n news-scraper
+          kubectl set image deployment/news-frontend news-frontend="$FRONTEND_IMAGE" -n news-scraper
           kubectl rollout status deployment/news-backend -n news-scraper --timeout=180s
           kubectl rollout status deployment/news-frontend -n news-scraper --timeout=180s
 
