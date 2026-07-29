@@ -1,0 +1,115 @@
+name: CD Local Kind Unix
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: "Environment flavor to deploy"
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - qa
+      image_sha:
+        description: "Commit SHA image tag to deploy. Leave empty to use the current workflow commit."
+        required: false
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+  packages: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  deploy-local-kind:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: self-hosted
+
+    steps:
+      - name: Resolve deployment inputs
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            echo "TARGET_ENV=qa" >> "$GITHUB_ENV"
+            echo "IMAGE_SHA=${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_ENV"
+            echo "CHECKOUT_REF=${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_ENV"
+          else
+            TARGET_ENV="${{ github.event.inputs.target_environment }}"
+            IMAGE_SHA="${{ github.event.inputs.image_sha }}"
+            if [ -z "$IMAGE_SHA" ]; then
+              IMAGE_SHA="${{ github.sha }}"
+            fi
+            echo "TARGET_ENV=${TARGET_ENV}" >> "$GITHUB_ENV"
+            echo "IMAGE_SHA=${IMAGE_SHA}" >> "$GITHUB_ENV"
+            echo "CHECKOUT_REF=${{ github.sha }}" >> "$GITHUB_ENV"
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CHECKOUT_REF }}
+
+      - name: Set image names
+        run: |
+          OWNER="$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
+          echo "BACKEND_IMAGE=ghcr.io/${OWNER}/news-scraper-backend:${TARGET_ENV}-${IMAGE_SHA}" >> "$GITHUB_ENV"
+          echo "FRONTEND_IMAGE=ghcr.io/${OWNER}/news-scraper-frontend:${TARGET_ENV}-${IMAGE_SHA}" >> "$GITHUB_ENV"
+
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Pull selected images
+        run: |
+          docker pull "$BACKEND_IMAGE"
+          docker pull "$FRONTEND_IMAGE"
+
+      - name: Ensure Kind cluster exists
+        run: |
+          if ! kind get clusters | grep '^xlabs-news-scraper$'; then
+            case "$(uname -s)" in
+              Darwin)
+                kind create cluster --name xlabs-news-scraper --image kindest/node:v1.35.1
+                ;;
+              *)
+                kind create cluster --name xlabs-news-scraper --image syednadeembe/xlabs-kind-node:k8s-1.35.1-v1
+                ;;
+            esac
+          fi
+          kubectl config use-context kind-xlabs-news-scraper
+          kubectl get nodes
+
+      - name: Load images into Kind
+        run: |
+          kind load docker-image "$BACKEND_IMAGE" --name xlabs-news-scraper
+          kind load docker-image "$FRONTEND_IMAGE" --name xlabs-news-scraper
+
+      - name: Deploy selected overlay
+        run: |
+          kubectl kustomize "k8s/overlays/${TARGET_ENV}" > xlabs-rendered.yaml
+          kubectl apply -f xlabs-rendered.yaml
+          kubectl set image deployment/news-backend backend="$BACKEND_IMAGE" -n news-scraper
+          kubectl set image deployment/news-frontend frontend="$FRONTEND_IMAGE" -n news-scraper
+          kubectl rollout status deployment/news-backend -n news-scraper --timeout=180s
+          kubectl rollout status deployment/news-frontend -n news-scraper --timeout=180s
+
+      - name: Capture Kubernetes evidence
+        if: always()
+        run: |
+          mkdir -p xlabs-work/evidence/cd
+          kubectl get pods,svc,endpoints,pvc -n news-scraper -o wide > xlabs-work/evidence/cd/resources.txt || true
+          kubectl describe deployment news-backend -n news-scraper > xlabs-work/evidence/cd/backend-deployment.txt || true
+          kubectl describe deployment news-frontend -n news-scraper > xlabs-work/evidence/cd/frontend-deployment.txt || true
+          kubectl get events -n news-scraper --sort-by=.metadata.creationTimestamp > xlabs-work/evidence/cd/events.txt || true
+
+      - name: Upload Kubernetes evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-kind-${{ env.TARGET_ENV }}-deploy-evidence
+          path: xlabs-work/evidence/cd/

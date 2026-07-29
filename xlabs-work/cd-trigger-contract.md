@@ -1,0 +1,9 @@
+- CD supports a target_environment choice: dev or qa.
+- Dev CD uses dev-<commit-sha> tags.
+- Dev CD applies k8s/overlays/dev.
+- Dev CD may run from workflow_dispatch even if CI failed.
+- QA CD uses qa-<commit-sha> tags.
+- QA CD applies k8s/overlays/qa.
+- QA CD must run only when CI conclusion is success.
+- CD does not rebuild images.
+- CD treats frontend and backend images from the same commit as one release pair.
