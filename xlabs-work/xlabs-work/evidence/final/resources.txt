@@ -1,0 +1,34 @@
+NAME                                 READY   STATUS    RESTARTS   AGE     IP            NODE                               NOMINATED NODE   READINESS GATES
+pod/news-backend-c678d96c6-m5msj     1/1     Running   0          139m    10.244.0.58   xlabs-news-scraper-control-plane   <none>           <none>
+pod/news-frontend-59c477b4d9-gdkjt   1/1     Running   0          139m    10.244.0.59   xlabs-news-scraper-control-plane   <none>           <none>
+pod/news-mongo-0                     1/1     Running   0          2d18h   10.244.0.20   xlabs-news-scraper-control-plane   <none>           <none>
+
+NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE     SELECTOR
+service/news-backend    ClusterIP   10.96.175.155   <none>        8000/TCP    3d2h    app=news-backend
+service/news-frontend   ClusterIP   10.96.186.128   <none>        80/TCP      3d2h    app=news-frontend
+service/news-mongo      ClusterIP   10.96.215.76    <none>        27017/TCP   3d18h   app=news-mongo
+
+NAME                      ENDPOINTS           AGE
+endpoints/news-backend    10.244.0.58:8000    3d2h
+endpoints/news-frontend   10.244.0.59:8080    3d2h
+endpoints/news-mongo      10.244.0.20:27017   3d18h
+
+NAME                                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE     VOLUMEMODE
+persistentvolumeclaim/mongo-data-news-mongo-0   Bound    pvc-ca504d7d-c7b0-45b7-a051-007bfabb7616   1Gi        RWO            standard       <unset>                 2d22h   Filesystem
+NAME                                 READY   STATUS    RESTARTS   AGE     IP            NODE                               NOMINATED NODE   READINESS GATES
+pod/news-backend-c678d96c6-m5msj     1/1     Running   0          141m    10.244.0.58   xlabs-news-scraper-control-plane   <none>           <none>
+pod/news-frontend-59c477b4d9-gdkjt   1/1     Running   0          141m    10.244.0.59   xlabs-news-scraper-control-plane   <none>           <none>
+pod/news-mongo-0                     1/1     Running   0          2d18h   10.244.0.20   xlabs-news-scraper-control-plane   <none>           <none>
+
+NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE     SELECTOR
+service/news-backend    ClusterIP   10.96.175.155   <none>        8000/TCP    3d2h    app=news-backend
+service/news-frontend   ClusterIP   10.96.186.128   <none>        80/TCP      3d2h    app=news-frontend
+service/news-mongo      ClusterIP   10.96.215.76    <none>        27017/TCP   3d18h   app=news-mongo
+
+NAME                      ENDPOINTS           AGE
+endpoints/news-backend    10.244.0.58:8000    3d2h
+endpoints/news-frontend   10.244.0.59:8080    3d2h
+endpoints/news-mongo      10.244.0.20:27017   3d18h
+
+NAME                                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE     VOLUMEMODE
+persistentvolumeclaim/mongo-data-news-mongo-0   Bound    pvc-ca504d7d-c7b0-45b7-a051-007bfabb7616   1Gi        RWO            standard       <unset>                 2d22h   Filesystem

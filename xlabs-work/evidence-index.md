@@ -1,0 +1,17 @@
+- Runtime inventory.
+- Docker evidence.
+- Compose evidence.
+- Kubernetes resource evidence.
+- Persistence test evidence.
+- Probe behavior evidence.
+- Troubleshooting notes.
+- Kustomize base and overlay notes.
+- CI run evidence.
+- Selected CI workflow file.
+- CD run evidence.
+- Selected CD workflow file.
+- GHCR dev image tags.
+- GHCR QA image tags.
+- Dev deployment evidence.
+- QA deployment evidence.
+- Production readiness review.
