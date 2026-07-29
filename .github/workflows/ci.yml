@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-smoke-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set image names
+        run: |
+          OWNER="$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
+          echo "BACKEND_IMAGE=ghcr.io/${OWNER}/news-scraper-backend" >> "$GITHUB_ENV"
+          echo "FRONTEND_IMAGE=ghcr.io/${OWNER}/news-scraper-frontend" >> "$GITHUB_ENV"
+          echo "IMAGE_SHA=${GITHUB_SHA}" >> "$GITHUB_ENV"
+
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Build dev images
+        run: |
+          docker build -t "${BACKEND_IMAGE}:dev-${IMAGE_SHA}" ./backend
+          docker build -t "${FRONTEND_IMAGE}:dev-${IMAGE_SHA}" ./frontend
+
+      - name: Push dev images
+        run: |
+          docker push "${BACKEND_IMAGE}:dev-${IMAGE_SHA}"
+          docker push "${FRONTEND_IMAGE}:dev-${IMAGE_SHA}"
+
+      - name: Start smoke runtime
+        run: |
+          docker network create news-scraper-ci 2>/dev/null || true
+          docker rm -f news-mongo-ci news-backend-ci news-frontend-ci 2>/dev/null || true
+          docker run -d --name news-mongo-ci --network news-scraper-ci -p 27017:27017 mongo:7
+          docker run -d --name news-backend-ci --network news-scraper-ci -p 8000:8000 \
+            -e APP_ENV=ci \
+            -e MONGO_URL=mongodb://news-mongo-ci:27017 \
+            -e MONGO_DATABASE=news_scraper_ci \
+            -e SCRAPER_API_TOKEN=ci-token \
+            "${BACKEND_IMAGE}:dev-${IMAGE_SHA}"
+          docker run -d --name news-frontend-ci --network news-scraper-ci -p 3000:8080 \
+            "${FRONTEND_IMAGE}:dev-${IMAGE_SHA}"
+
+      - name: Wait for services
+        run: |
+          for i in {1..40}; do
+            if curl -fsS http://localhost:8000/health >/dev/null && curl -fsSI http://localhost:3000 >/dev/null; then
+              exit 0
+            fi
+            sleep 3
+          done
+          docker logs news-backend-ci || true
+          docker logs news-frontend-ci || true
+          exit 1
+
+      - name: Smoke test
+        run: |
+          mkdir -p xlabs-work/evidence/ci
+          FRONTEND_URL=http://localhost:3000 BACKEND_URL=http://localhost:8000 sh xlabs-work/smoke-test.sh \
+            > xlabs-work/evidence/ci/smoke-output.txt
+
+      - name: Upload smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-evidence
+          path: xlabs-work/evidence/ci/
+
+      - name: Promote QA image tags
+        run: |
+          docker tag "${BACKEND_IMAGE}:dev-${IMAGE_SHA}" "${BACKEND_IMAGE}:qa-${IMAGE_SHA}"
+          docker tag "${FRONTEND_IMAGE}:dev-${IMAGE_SHA}" "${FRONTEND_IMAGE}:qa-${IMAGE_SHA}"
+          docker push "${BACKEND_IMAGE}:qa-${IMAGE_SHA}"
+          docker push "${FRONTEND_IMAGE}:qa-${IMAGE_SHA}"
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker rm -f news-mongo-ci news-backend-ci news-frontend-ci 2>/dev/null || true
+          docker network rm news-scraper-ci 2>/dev/null || true
